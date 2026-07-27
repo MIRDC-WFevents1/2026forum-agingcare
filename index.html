@@ -134,5 +134,93 @@
     <footer><div class="container footer-inner"><p>2026 高齡照護創新研討會</p><p>主辦｜經濟部產業技術司　執行｜財團法人金屬工業研究發展中心</p></div></footer>
     <a class="mobile-register" href="https://www.mirdc.org.tw/ApplyEventDetail?MCode=V01&amp;MID=20c18949-8fee-457d-a43d-e4bbeb8430a0&amp;ID=1d658fb9-840b-439f-b43f-8c620a5924bb" target="_blank" rel="noreferrer">立即免費報名 <span>→</span></a>
   </main>
+  <script>
+    // 頁面滑入淡出動畫
+    (() => {
+      function initScrollReveal() {
+        const style = document.createElement("style");
+
+        style.textContent = `
+          .wf-scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition:
+              opacity 0.65s ease,
+              transform 0.65s ease;
+            transition-delay: var(--wf-delay, 0ms);
+          }
+
+          .wf-scroll-reveal.wf-is-visible {
+            opacity: 1;
+            transform: translateY(0);
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .wf-scroll-reveal {
+              opacity: 1;
+              transform: none;
+              transition: none;
+            }
+          }
+        `;
+
+        document.head.appendChild(style);
+
+        const targets = document.querySelectorAll(`
+          #about .about-grid,
+          #about .focus-card,
+          #speakers .section-heading-row,
+          #speakers .speaker-card,
+          #agenda .agenda-heading,
+          #agenda .agenda-row,
+          #information .poster-panel,
+          #information .info-content,
+          .organizers-section .organizer-heading,
+          .organizers-section .org-card,
+          .final-cta .final-cta-inner
+        `);
+
+        if (!("IntersectionObserver" in window)) {
+          targets.forEach((target) => {
+            target.classList.add("wf-is-visible");
+          });
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("wf-is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+            rootMargin: "0px 0px -40px 0px"
+          }
+        );
+
+        targets.forEach((target, index) => {
+          target.classList.add("wf-scroll-reveal");
+
+          // 同一排卡片稍微錯開出現
+          target.style.setProperty(
+            "--wf-delay",
+            `${(index % 3) * 70}ms`
+          );
+
+          observer.observe(target);
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initScrollReveal);
+      } else {
+        initScrollReveal();
+      }
+    })();
+  </script>
 </body>
 </html>
