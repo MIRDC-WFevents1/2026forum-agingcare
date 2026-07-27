@@ -167,17 +167,10 @@
         document.head.appendChild(style);
 
         const targets = document.querySelectorAll(`
-          #about .about-grid,
-          #about .focus-card,
-          #speakers .section-heading-row,
-          #speakers .speaker-card,
-          #agenda .agenda-heading,
-          #agenda .agenda-row,
-          #information .poster-panel,
-          #information .info-content,
-          .organizers-section .organizer-heading,
-          .organizers-section .org-card,
-          .final-cta .final-cta-inner
+  #about .about-grid,
+  #about .focus-card,
+  #agenda .agenda-heading,
+  #agenda .agenda-row
         `);
 
         if (!("IntersectionObserver" in window)) {
